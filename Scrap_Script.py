@@ -10,23 +10,23 @@ from twisted.internet import task
 
 url = 'https://www.infobae.com/ultimas-noticias/'
 soup = BeautifulSoup(requests.get(url).content,'html.parser')
-content_notice = soup.find_all('a','nd-feed-list-card')
-link_notice = list()
-notice = list()
+content_news = soup.find_all('a','nd-feed-list-card')
+link_news = list()
+news = list()
 
 
 
-##Extract information from content_notice##
+##Extract information from content_news##
 def extractInformation():
-    for n in content_notice:
-        notice.append(n.text)
-        link_notice.append('https://www.infobae.com/'+(n.get('href')))
+    for n in content_news:
+        news.append(n.text)
+        link_news.append('https://www.infobae.com/'+(n.get('href')))
 
 
 def generateString():
-    content = ""
+    content = "Daily News"
     for i in range(0,11):
-        content = content + '\n' + "Noticia " + str(i) + "\n" + notice[i] +"\n"+"Link: " + link_notice[i] + '\n'
+        content = content + '\n' + "\n" + news[i] +"\n"+"Link: " + link_news[i] + '\n'
     return content
 
 ##Prepare the email that will be send##
