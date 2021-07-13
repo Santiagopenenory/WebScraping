@@ -48,9 +48,7 @@ def execute():
     extractInformation()
     sendEmail()
 ##Main##
-
-
-
+Time = 3600.0 ##amount of seconds to the next execution##
 RunTask = task.LoopingCall(execute)
-RunTask.start(3600.0)
+RunTask.start(Time)
 reactor.run()
