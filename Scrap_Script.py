@@ -25,14 +25,16 @@ def extractInformation():
 
 
 #####Generate HTML content
-def generatePyH(title,link):
+def generatePyH(title,link,picture):
     h='<h3 style="font: size 24px;margin:0 0 20px 0;font-family:Arial,sans-serif;">'+title+'</h3>' 
-    a = '<a href="'+link+'">Seguir leyendo </a>'
-    return h+'\n'+a+'\n'
+    p = '<p>  </p>'
+    i = '<img src='+picture+' width="400" height="200">'
+    a= '<form action='+link+'><input type="submit" value="Seguir Leyendo"/></form>'
+    return h+'\n'+i+'\n'+'\n'+p+'\n'+a+'\n'+p
 
 def generateHTML(news,link_news):
     html = ""
-    for i in range(0,10):
+    for i in range(0,9):
         html = html +'\n' + generatePyH(news[i],link_news[i])
     return html
 
