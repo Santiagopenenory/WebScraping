@@ -1,4 +1,5 @@
 from email import message, message_from_binary_file
+from email import message, message_from_binary_file
 from warnings import resetwarnings
 from bs4 import BeautifulSoup
 import requests
@@ -15,29 +16,35 @@ soup = BeautifulSoup(requests.get(url).content,'html.parser')
 content_news = soup.find_all('a','nd-feed-list-card')
 link_news = list()
 news = list()
+pictures = list()
+target_users = list()
 
+
+##add target users emails##
+def addTargetUser(user):
+    target_users.append(user)
 
 ##Extract information from content_news##
 def extractInformation():
     for n in content_news:
         news.append(n.text)
         link_news.append("https://www.infobae.com/"+(n.get('href')))
+        image = str(n.find('img').get('srcset')).split(',')
+        pictures.append(str(image[0]).split(' ')[0])
 
 
 #####Generate HTML content
 def generatePyH(title,link,picture):
     h='<h3 style="font: size 24px;margin:0 0 20px 0;font-family:Arial,sans-serif;">'+title+'</h3>' 
-    p = '<p>  </p>'
+    b = '<br>'
     i = '<img src='+picture+' width="400" height="200">'
     a= '<form action='+link+'><input type="submit" value="Seguir Leyendo"/></form>'
-    return h+'\n'+i+'\n'+'\n'+p+'\n'+a+'\n'+p
-
-def generateHTML(news,link_news):
+    return h+i+b+a+b
+def generateHTML(news,link_news,pictures):
     html = ""
     for i in range(0,9):
-        html = html +'\n' + generatePyH(news[i],link_news[i])
+        html = html +'\n' + generatePyH(news[i],link_news[i],pictures[i])
     return html
-
 
 def sendEmail():
     message = """
@@ -58,9 +65,6 @@ def sendEmail():
         </xml>
     </noscript>
     <![endif]-->
-    <style>
-        table, td, div, h1, p {font-family: Arial, sans-serif;}
-    </style>
     </head>
     <body style="margin:0;padding:0;">
     <table role="presentation" style="width:100%;border-collapse:collapse;border:0;border-spacing:0;background:#ffffff;">
@@ -123,11 +127,11 @@ def sendEmail():
         msg = MIMEMultipart()
         smtp.login('email_User',"Password")
         msg['From'] = 'email_User'
-        msg['To'] = 'recipient_mail'
         msg['Subject'] = 'News'
         msg['Content-type'] = 'text/html'
         msg.attach(MIMEText(message,'html'))
-        smtp.sendmail(msg['From'],msg['To'],msg.as_string())
+        for user in target_users:
+            smtp.sendmail(msg['From'],user,msg.as_string())
 
 def execute():
     extractInformation()
@@ -137,5 +141,5 @@ def execute():
 
 
 RunTask = task.LoopingCall(execute)
-RunTask.start(10.0) #Execution after 10 seconds#
+RunTask.start(3600.0) #Execution after 1 hour#
 reactor.run()
