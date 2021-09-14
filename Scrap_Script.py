@@ -1,6 +1,4 @@
-from email import message, message_from_binary_file
-from email import message, message_from_binary_file
-from warnings import resetwarnings
+
 from bs4 import BeautifulSoup
 import requests
 import smtplib
