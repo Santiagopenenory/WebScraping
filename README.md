@@ -1,4 +1,4 @@
-# Infobae Newsletter using Web Scraping!
+# Infobae Newsletter Using Web Scraping
 
 ## Python Requirements
 - beautifulsoup4   
