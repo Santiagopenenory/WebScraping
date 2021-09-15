@@ -9,7 +9,7 @@
 
 ##
 
-> **Note:** The news was taken from the official website of infobae
+> **Note:** The news was taken from the official website of infobae.
 > 
 > **Link:** https://www.infobae.com/ultimas-noticias/
 
